@@ -1,6 +1,6 @@
 {
   "name": "nodetest_palmidia_node_begginer",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "test",
   "main": "index.js",
   "scripts": {

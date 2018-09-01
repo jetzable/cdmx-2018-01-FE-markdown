@@ -1,16 +1,31 @@
 {
   "name": "nodetest_palmidia_node_begginer",
-  "version": "1.1.1",
-  "description": "test",
+  "version": "1.0.0",
+  "description": "NPM Library to read Markdown files and identify link status.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jetzable/cdmx-2018-01-FE-markdown.git"
+  },
+  "keywords": [
+    "npm",
+    "npm",
+    "library",
+    "markdown",
+    "link",
+    "link",
+    "status"
+  ],
+  "author": "Palmidia Garay",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jetzable/cdmx-2018-01-FE-markdown/issues"
+  },
+  "homepage": "https://github.com/jetzable/cdmx-2018-01-FE-markdown#readme",
   "dependencies": {
-    "marked": "^0.5.0",
-    "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "marked": "^0.5.0"
   }
 }

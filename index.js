@@ -37,8 +37,9 @@ const readFile = (path) => {
           if (isURL !== -1 && isIMG === '[') {
             lineNumber++;
             let findAlt = element.indexOf(']');
+            let finUrlEnd = element.indexOf(')');
             let alt = element.slice(1, findAlt);
-            let findURL = element.slice(findAlt + 2, element.length - 1);
+            let findURL = element.slice(findAlt + 2, finUrlEnd);
             let linkObj = {
               lineNumber: lineNumber,
               file: __filename,

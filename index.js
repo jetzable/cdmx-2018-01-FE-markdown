@@ -13,9 +13,25 @@ const getArguments = () => {
     } else {
       let getFile = stats.isFile();
       let getDir = stats.isDirectory();
+      if (getFile) {
+        readFile(path);
+      } else {
+        fs.readdir(path, 'utf8', (err, info) => {
+          if (err) {
+            console.log(err);
+          } else {
+            info.forEach(file => {
+              let isMarkdown = file.indexOf('.md');
+              if (isMarkdown !== -1) {
+                let fileFound = path + file;
+                readFile(fileFound);
+              }
+            });
+          }
+        });
+      }
     }
   });
-  readFile(path);
 };
 
 
@@ -27,6 +43,7 @@ const readFile = (path) => {
     const tokens = marked.lexer(md);
     let linkArrFromText = [];
     let lineNumber = 0;
+    console.log(tokens);
     tokens.forEach(line => {
       if (line.type !== 'space') {
         let lineText = line.text;

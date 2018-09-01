@@ -1,6 +1,6 @@
 const marked = require('marked');
 const fs = require('fs');
-const request = require('request-promise');
+const https = require('https');
 
 const getArguments = () => {
   const args = process.argv;
@@ -55,23 +55,19 @@ const readFile = (path) => {
         lineNumber++;
       }
     });
-    console.log(linkArrFromText);
-    // requestStatus(linkArrFromText);
+    requestStatus(linkArrFromText);
   });
 };
 
-// const requestStatus = (linkArr) => {
-//   let options = {
-//     method: 'POST',
-//     uri: ''
-//   };
-//   linkArr.forEach(link => {
-//     options.uri = link.linkUrl;
-//     request(options)
-//       .then(res => {
-//         console.log(res.statusCode);
-//       })
-//   })
-// }
+const requestStatus = (linkArr) => {
+  linkArr.forEach(link => {
+    https.get(link.linkUrl, resp => {
+      link.status = resp.statusCode + ' ' + resp.statusMessage;
+      console.log(link);
+    });
+  });
+};
+
 
 getArguments();
+

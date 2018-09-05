@@ -3,13 +3,14 @@ const fs = require('fs');
 const request = require('request');
 const path = require('path');
 
-const requestLinkStatus = (href) => {
-  request(href, (error, resp) => {
+const requestLinkStatus = (urlInfo) => {
+  request(urlInfo.href, (error, resp) => {
     if (error) {
       console.log(error);
     }
-    const status = resp.statusCode + ' ' + resp.statusMessage;
-    return status;
+    const urlStatus = resp.statusCode + ' ' + resp.statusMessage;
+    urlInfo.status = urlStatus;
+    console.log(urlInfo);
   });
 };
 
@@ -39,7 +40,7 @@ const readFile = (file, linkStatus) => {
               href: linkUrl,
               status: ''
             }
-            linkStatus(urlInfo.href);
+            linkStatus(urlInfo);
           } else {
             lineNumber++;
           }
@@ -62,7 +63,6 @@ const readPath = (arguments, readFile) => {
   const filePath = eachArgument[2];
   const resolvedpath = path.resolve(filePath);
   fs.lstat(resolvedpath, (err, pathinfo) => {
-
     if (err) {
       return console.log(err); //Handle error
     } else {

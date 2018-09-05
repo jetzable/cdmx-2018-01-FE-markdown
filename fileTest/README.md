@@ -1,7 +1,7 @@
 # Título
 #Otro título
 
-[URL Para Ingresar 1](https://jetzable.github.io/Registro_de_Visitantes/src/)
+[URL Para Ingresar 1](https://github.com/sanrey254/proyecto)
 _paaaaaa
 *ppoooooooo*
 

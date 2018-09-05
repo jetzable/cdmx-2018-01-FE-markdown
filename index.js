@@ -1,6 +1,6 @@
 const marked = require('marked');
 const fs = require('fs');
-const https = require('https');
+const request = require('request');
 
 const getArguments = () => {
   const args = process.argv;
@@ -11,10 +11,11 @@ const getArguments = () => {
     if (err) {
       return console.log(err); //Handle error
     } else {
-      let getFile = stats.isFile();
-      let getDir = stats.isDirectory();
+      const getFile = stats.isFile();
+      const getDir = stats.isDirectory();
       if (getFile) {
         readFile(path);
+        return path;
       } else {
         fs.readdir(path, 'utf8', (err, info) => {
           if (err) {
@@ -34,37 +35,34 @@ const getArguments = () => {
   });
 };
 
-
-
 const readFile = (path) => {
-  let md = '';
   fs.readFile(path, 'utf8', (err, data) => {
-    md = data;
-    const tokens = marked.lexer(md);
-    let linkArrFromText = [];
+    const tokens = marked.lexer(data);
+    const listOfUrl = [];
     let lineNumber = 0;
-    console.log(tokens);
     tokens.forEach(line => {
-      if (line.type !== 'space') {
-        let lineText = line.text;
-        let parragraphSplit = lineText.split('\n');
+      const isListType = line.type.indexOf('list');
+      if (line.type !== 'space' && isListType === -1) {
+        const lineText = line.text;
+        const parragraphSplit = lineText.split('\n');
         parragraphSplit.forEach(element => {
-          let isURL = element.indexOf('https');
-          let isIMG = element[0];
-          if (isURL !== -1 && isIMG === '[') {
+          const isThereAnUrl = element.indexOf('http');
+          const findUrlStart = element.indexOf('[');
+          const isItAnImg = findUrlStart - 1;
+          if (isThereAnUrl !== -1 && isItAnImg !== '!') {
             lineNumber++;
-            let findAlt = element.indexOf(']');
-            let finUrlEnd = element.indexOf(')');
-            let alt = element.slice(1, findAlt);
-            let findURL = element.slice(findAlt + 2, finUrlEnd);
-            let linkObj = {
+            const findTextEnd = element.indexOf(']');
+            const findUrlEnd = element.indexOf(')');
+            const altUrl = element.slice(findUrlStart + 1, findTextEnd);
+            const linkUrl = element.slice(findTextEnd + 2, findUrlEnd);
+            let urlInfo = {
               lineNumber: lineNumber,
-              file: __filename,
-              altUrl: alt,
-              linkUrl: findURL,
+              file: path,
+              text: altUrl,
+              href: linkUrl,
               status: ''
             }
-            linkArrFromText.push(linkObj);
+            listOfUrl.push(urlInfo);
           } else {
             lineNumber++;
           }
@@ -73,19 +71,9 @@ const readFile = (path) => {
         lineNumber++;
       }
     });
-    requestStatus(linkArrFromText);
-  });
-};
-
-const requestStatus = (linkArr) => {
-  linkArr.forEach(link => {
-    https.get(link.linkUrl, resp => {
-      link.status = resp.statusCode + ' ' + resp.statusMessage;
-      console.log(link);
-    });
+    requestStatus(listOfUrl);
   });
 };
 
 
 getArguments();
-

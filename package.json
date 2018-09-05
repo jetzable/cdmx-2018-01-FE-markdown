@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/jetzable/cdmx-2018-01-FE-markdown#readme",
   "dependencies": {
-    "marked": "^0.5.0"
+    "marked": "^0.5.0",
+    "npm": "^6.4.1",
+    "request": "^2.88.0"
   }
 }

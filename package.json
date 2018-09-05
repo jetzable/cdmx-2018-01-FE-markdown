@@ -1,6 +1,6 @@
 {
   "name": "nodetest_palmidia_node_begginer",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "NPM Library to read Markdown files and identify link status.",
   "main": "index.js",
   "scripts": {
